@@ -1,0 +1,14 @@
+server:
+  port : 5003
+
+spring:
+  application:
+    name: SUBMISSION-SERVICE
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/task_submission_service
+    password: 123123
+  jpa:
+    hibernate:
+      ddl-auto: update
