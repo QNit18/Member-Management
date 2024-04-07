@@ -6,6 +6,7 @@ import com.qnit18.exception.ErrorCode;
 import com.qnit18.model.User;
 import com.qnit18.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
