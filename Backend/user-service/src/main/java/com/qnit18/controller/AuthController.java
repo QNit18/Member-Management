@@ -8,6 +8,7 @@ import com.qnit18.exception.ErrorCode;
 import com.qnit18.model.User;
 import com.qnit18.repository.UserRepository;
 import com.qnit18.service.AuthenticationService;
+import com.qnit18.service.AuthenticationServiceImpl;
 import com.qnit18.service.CustomerUserServiceImplementation;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthController {
-    AuthenticationService authenticationService;
-
+    AuthenticationServiceImpl authenticationService;
 
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> createUserHandler(
@@ -48,5 +48,4 @@ public class AuthController {
 
         return new ResponseEntity<>(authResponse, HttpStatus.OK);
     }
-
 }
