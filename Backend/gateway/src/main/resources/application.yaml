@@ -32,14 +32,6 @@ spring:
             allowedMethods: "*"
             allowedHeaders: "*"
 
-
-
-
-
-
-
-
-
 eureka:
   instance:
     prefer-ip-address: true
