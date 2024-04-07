@@ -5,7 +5,6 @@ import com.qnit18.exception.ErrorCode;
 import com.qnit18.model.User;
 import com.qnit18.repository.UserRepository;
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

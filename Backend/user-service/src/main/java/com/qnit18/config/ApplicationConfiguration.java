@@ -54,9 +54,9 @@ public class ApplicationConfiguration {
             @Override
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration cfg = new CorsConfiguration();
-                cfg.setAllowedOrigins(Collections.singletonList("*"));
-                cfg.setAllowedMethods(Collections.singletonList("*"));
-                cfg.setAllowCredentials(true);
+                cfg.setAllowedOrigins(Collections.singletonList("*")); // Allows requests from any origin (*).
+                cfg.setAllowedMethods(Collections.singletonList("*")); //  Allows all HTTP methods (GET, POST, PUT, DELETE, etc.).
+                cfg.setAllowCredentials(true); //  Indicates that credentials such as cookies and authorization headers can be included in the CORS request.
                 cfg.setAllowedHeaders(Collections.singletonList("*"));
                 cfg.setExposedHeaders(Arrays.asList("Authorization"));
                 cfg.setMaxAge(3600L);

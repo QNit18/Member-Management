@@ -1,4 +1,5 @@
-package com.qnit18.controller;
+package com.qnit18.service;
+
 
 import com.qnit18.config.JwtProvider;
 import com.qnit18.dto.request.LoginRequest;
@@ -7,38 +8,25 @@ import com.qnit18.exception.AppException;
 import com.qnit18.exception.ErrorCode;
 import com.qnit18.model.User;
 import com.qnit18.repository.UserRepository;
-import com.qnit18.service.CustomerUserServiceImplementation;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("/auth")
-@Slf4j
-public class AuthController {
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class AuthenticationServiceImpl implements AuthenticationService {
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private CustomerUserServiceImplementation customerUserDetails;
+    UserRepository userRepository;
+    PasswordEncoder passwordEncoder;
+    CustomerUserServiceImplementation customerUserDetails;
 
-    @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> createUserHandler(
-            @RequestBody User user) throws Exception {
-
+    @Override
+    public AuthResponse authenticate(User user) {
         String email = user.getEmail();
         String password = user.getPassword();
         String fullName = user.getFullName();
@@ -68,12 +56,11 @@ public class AuthController {
         authResponse.setMessage("Register Success");
         authResponse.setStatus(true);
 
-        return new ResponseEntity<>(authResponse, HttpStatus.OK);
+        return authResponse;
     }
 
-    @PostMapping("/signin")
-    public ResponseEntity<AuthResponse> sigin(@RequestBody LoginRequest request){
-
+    @Override
+    public AuthResponse login(LoginRequest request) {
         String username = request.getEmail();
         String password = request.getPassword();
 
@@ -88,10 +75,7 @@ public class AuthController {
         authResponse.setMessage("Login success");
         authResponse.setJwt(token);
         authResponse.setStatus(true);
-
-//        log.info("authResponse", authResponse);
-
-        return new ResponseEntity<>(authResponse, HttpStatus.OK);
+        return authResponse;
     }
 
     private Authentication authenticate(String username, String password) {
@@ -111,6 +95,4 @@ public class AuthController {
 
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
-
-
 }
