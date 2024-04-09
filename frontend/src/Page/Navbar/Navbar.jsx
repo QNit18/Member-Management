@@ -8,7 +8,7 @@ const Navbar = () => {
       <p className="font-bold text-lg">QNit18 Task Manager</p>
       <div className="flex items-center gap-5">
         <p>Code wit QNit18</p>
-        <Avatar sx={{backgroundColor : "#c24dd0"}}>C</Avatar>
+        <Avatar sx={{backgroundColor : "#83f5fd"}}>C</Avatar>
       </div>
     </div>
   );

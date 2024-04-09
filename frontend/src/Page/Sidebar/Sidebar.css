@@ -1,19 +1,15 @@
-.card{
-  background-color: #0c071b;
-  box-shadow: rgba(215, 106, 255, 0.507);
-  padding: 1rem;
-  border-radius: 5px;
-}
-
 .menuItem{
   border: 2px solid #c24dd0;
 }
 
 .activeMenuItem{
   background-image: linear-gradient(150deg, #c24dd0, #7a72fa);
-  color: white;
 }
 
 .logoutButton{
-  color: white;
+  color: white !important;
+  background-image: linear-gradient(150deg, #c24dd0, #ff005d);
+  padding: 0.7rem;
+  width: 100%;
+  border-radius: 2rem;
 }

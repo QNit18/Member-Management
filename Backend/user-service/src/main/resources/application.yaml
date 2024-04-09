@@ -7,7 +7,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/task_user_service
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/user_service
     password: 123123
   jpa:
     hibernate:
