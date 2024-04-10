@@ -19,7 +19,7 @@ const style = {
 
 const tags = ["Angular", "React", "Vue", "Spring Boot", "Python"];
 
-export default function CreateNewTaskForm({ handleClose, open }) {
+export default function EditTaskForm({ handleClose, open }) {
   const [formData, setFormData] = useState({
     title: "",
     image: "",
@@ -148,7 +148,7 @@ export default function CreateNewTaskForm({ handleClose, open }) {
                 className="customeButton"
                 type="submit"
                 sx={{padding : ".9rem"}}>
-                  Create
+                  Update
                 </Button>
               </Grid>
             </Grid>
