@@ -7,7 +7,6 @@ const Home = () => {
     <div className='lg:flex px-5 lg:px-20 pt-[2.9vh]'>
       <div className='lg:lock w-[25vw] relative'>
         <Sidebar/>
-        
       </div>
       <div className='right-side-part w-full flex justify-center mb-10'>
         <TaskList/>

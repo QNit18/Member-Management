@@ -3,12 +3,13 @@ import Avatar from "@mui/material/Avatar";
 import "./Sidebar.css";
 import { Button } from "react-bootstrap";
 import CreateNewTaskForm from "../Task/TaskCard/CreateTask";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const menu = [
   { name: "HOME", value: "HOME", role: ["ROLE_ADMIN", "ROLE_CUSTOMER"] },
   { name: "DONE", value: "DONE", role: ["ROLE_ADMIN", "ROLE_CUSTOMER"] },
   { name: "ASSIGNED", value: "ASSIGNED", role: ["ROLE_ADMIN"] },
-  { name: "NOT ASSIGNED", value: "NOT ASSIGNED", role: ["ROLE_ADMIN"] },
+  { name: "NOT ASSIGNED", value: "PEDDING", role: ["ROLE_ADMIN"] },
   { name: "CREATE TASK", value: "", role: ["ROLE_ADMIN"] },
   { name: "NOTIFICATION", value: "NOTIFICATION", role: ["ROLE_CUSTOMER"] },
 ];
@@ -16,6 +17,9 @@ const menu = [
 const role = "ROLE_ADMIN";
 
 const Sidebar = () => {
+
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const [openCreateTaskForm, setOpenCreateTaskForm] = useState(false);
   const handleCloseCreateTaskForm = () => {
@@ -28,8 +32,19 @@ const Sidebar = () => {
   const [activeMenu, setActiceMenu] = useState("DONE");
 
   const handleMenuChange = (item) => {
+    const updatedParams = new URLSearchParams(location.search);
+
     if(item.name==="CREATE TASK"){
       handleOpenCreateTaskForm();
+    }
+    else if(item.name === "HOME"){
+      updatedParams.delete("filter");
+      const queryString = updatedParams.toString();
+      const updatedPath = queryString ? `${location.pathname} ? ${queryString}` : location.pathname;
+      navigate(updatedPath);
+    } else {
+      updatedParams.set("filter", item.value);
+      navigate(`${location.pathname}?${updatedParams.toString()}`)
     }
     setActiceMenu(item.name);
   };
