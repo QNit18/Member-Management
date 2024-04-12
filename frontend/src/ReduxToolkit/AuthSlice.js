@@ -3,13 +3,14 @@ import axios from "axios";
 import { BASE_URL, api, setAuthHeader } from "../api/api";
 
 export const login = createAsyncThunk("auth/login", async(userData) => {
+
   try {
     const {data} = await axios.post(`${BASE_URL}/auth/signin`, userData)
     localStorage.setItem("jwt", data.jwt);
     console.log("Login success!", data);
     return data;
   } catch (error) {
-    console.log("Error: " , error);
+    console.log("Error login: " , error);
     throw Error(error.response.data.error);
   }
 });
@@ -21,7 +22,7 @@ export const register = createAsyncThunk("auth/register", async(userData) => {
     console.log("Register success!", data);
     return data;
   } catch (error) {
-    console.log("Error: " , error);
+    console.log("Error register: " , error);
     throw Error(error.response.data.error);
   }
 });
@@ -30,7 +31,7 @@ export const logout = createAsyncThunk("auth/logout", async(userData) => {
   try {
     localStorage.clear();
   } catch (error) {
-    console.log("Error: " , error);
+    console.log("Error logout : " , error);
     throw Error(error.response.data.error);
   }
 });

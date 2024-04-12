@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,11 +14,15 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
+@EnableWebSecurity
 public class ApplicationConfiguration {
 
     // Config security method FilterChain
@@ -33,37 +38,41 @@ public class ApplicationConfiguration {
                         request -> request
                                 .requestMatchers("/api/**").authenticated()
                                 .anyRequest().permitAll()
-                // telling Spring security to insert your custom before BasicAuthenticationFilter
+                        // telling Spring security to insert your custom before BasicAuthenticationFilter
                 ).addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults());
-
+        http.cors(cors -> cors
+                .configurationSource(request -> {
+                    CorsConfiguration configuration = new CorsConfiguration();
+                    configuration.setAllowedOrigins(Arrays.asList("*"));
+                    configuration.setAllowedMethods(Arrays.asList("*"));
+                    configuration.setAllowedHeaders(Arrays.asList("*"));
+                    return configuration;
+                }
+                ));
         return http.build();
     }
 
     /**
-     *  Provides CORS configuration source
+     * Provides CORS configuration source
+     *
      * @return CorsConfigurationSource for configuring CORS
      */
 
-    private CorsConfigurationSource corsConfigurationSource() {
-
-        return new CorsConfigurationSource() {
-            @Override
-            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-                CorsConfiguration cfg = new CorsConfiguration();
-                cfg.setAllowedOrigins(Collections.singletonList("*")); // Allows requests from any origin (*).
-                cfg.setAllowedMethods(Collections.singletonList("*")); //  Allows all HTTP methods (GET, POST, PUT, DELETE, etc.).
-                cfg.setAllowCredentials(true); //  Indicates that credentials such as cookies and authorization headers can be included in the CORS request.
-                cfg.setAllowedHeaders(Collections.singletonList("*"));
-                cfg.setExposedHeaders(Arrays.asList("Authorization"));
-                cfg.setMaxAge(3600L);
-                return cfg;
-            }
-        };
-    }
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(List.of("*")); // Cho phép từ tất cả các origin
+//        configuration.setAllowedMethods(List.of("*")); // Cho phép tất cả các phương thức HTTP (GET, POST, PUT, DELETE, v.v.)
+//        configuration.setAllowedHeaders(List.of("*")); // Cho phép tất cả các header
+//        configuration.setAllowCredentials(true); // Cho phép sử dụng các credentials như cookies, authorization header
+//        configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type", "Access-Control-Allow-Origin")); // Các header được phép truy cập từ client
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration); // Áp dụng cấu hình này cho tất cả các đường dẫn
+//        return source;
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
